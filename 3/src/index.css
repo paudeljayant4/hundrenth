@@ -1,0 +1,258 @@
+@import "tailwindcss";
+
+/* ─── theme tokens ─────────────────────────────────── */
+:root {
+  --font-serif: "Cormorant Garamond", "Georgia", serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --color-bg: #0a0010;
+  --color-rose-soft: rgba(255, 95, 143, 0.15);
+  --color-rose-glow: rgba(255, 95, 143, 0.35);
+}
+
+/* ─── base ──────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+  -webkit-tap-highlight-color: transparent;
+  font-family: var(--font-sans);
+}
+
+body {
+  background: var(--color-bg);
+  color: white;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* lock scroll when modal open */
+body.modal-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+::selection {
+  background: rgba(255, 95, 143, 0.35);
+  color: #fff;
+}
+
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/* ─── scrollbar ─────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 95, 143, 0.18);
+  border-radius: 100px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 95, 143, 0.35);
+}
+
+/* ─── star twinkle ──────────────────────────────────── */
+@keyframes star-twinkle {
+  0%, 100% { opacity: 0.15; transform: scale(0.7); }
+  50% { opacity: 1; transform: scale(1.4); }
+}
+
+.star-twinkle {
+  animation: star-twinkle 3s ease-in-out infinite;
+  will-change: opacity, transform;
+}
+
+/* ─── floating hearts ───────────────────────────────── */
+@keyframes float-up {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(0.7);
+    opacity: 0;
+  }
+  8% { opacity: 0.5; }
+  85% { opacity: 0.2; }
+  100% {
+    transform: translateY(-110vh) rotate(360deg) scale(1);
+    opacity: 0;
+  }
+}
+
+.floating-heart {
+  animation: float-up 14s linear infinite;
+  will-change: transform, opacity;
+}
+
+/* ─── heartbeat ─────────────────────────────────────── */
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  12% { transform: scale(1.22); }
+  24% { transform: scale(1); }
+  36% { transform: scale(1.15); }
+  48% { transform: scale(1); }
+}
+
+.heartbeat-inline {
+  animation: heartbeat 1.6s ease-in-out infinite;
+  display: inline-block;
+  will-change: transform;
+}
+
+/* ─── scroll bounce ─────────────────────────────────── */
+@keyframes scroll-bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50% { transform: translateY(10px); opacity: 1; }
+}
+
+.scroll-bounce {
+  animation: scroll-bounce 2.2s ease-in-out infinite;
+}
+
+/* ─── confetti ──────────────────────────────────────── */
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-10px) translateX(0) rotate(0deg) scale(1);
+    opacity: 1;
+  }
+  25% {
+    transform: translateY(25vh) translateX(var(--drift, 20px)) rotate(180deg) scale(0.9);
+  }
+  50% {
+    transform: translateY(50vh) translateX(calc(var(--drift, 20px) * -0.6)) rotate(360deg) scale(0.8);
+  }
+  75% {
+    transform: translateY(75vh) translateX(var(--drift, 20px)) rotate(540deg) scale(0.7);
+  }
+  100% {
+    transform: translateY(105vh) translateX(0) rotate(720deg) scale(0.5);
+    opacity: 0;
+  }
+}
+
+.confetti-piece {
+  animation: confetti-fall var(--confetti-duration, 3s) cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  will-change: transform, opacity;
+}
+
+/* ─── scroll reveal ─────────────────────────────────── */
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  opacity: 0;
+}
+
+.reveal.visible {
+  animation: reveal-up 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.reveal-delay-1 { animation-delay: 0.1s; }
+.reveal-delay-2 { animation-delay: 0.2s; }
+.reveal-delay-3 { animation-delay: 0.3s; }
+.reveal-delay-4 { animation-delay: 0.4s; }
+.reveal-delay-5 { animation-delay: 0.5s; }
+
+/* ─── gentle float ──────────────────────────────────── */
+@keyframes gentle-float {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-12px) rotate(1deg); }
+}
+
+.gentle-float {
+  animation: gentle-float 4s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* ─── shimmer line ──────────────────────────────────── */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(200%); }
+}
+
+.shimmer-line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+  animation: shimmer 4s ease-in-out infinite;
+}
+
+/* ─── pulse ring ────────────────────────────────────── */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.4;
+  }
+  100% {
+    transform: scale(1.9);
+    opacity: 0;
+  }
+}
+
+.pulse-ring::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 9999px;
+  border: 2px solid rgba(255, 95, 143, 0.25);
+  animation: pulse-ring 2.2s ease-out infinite;
+}
+
+/* ─── cursor trail ──────────────────────────────────── */
+.cursor-trail-heart {
+  pointer-events: none;
+  font-family: serif;
+  line-height: 1;
+}
+
+/* ─── mobile perf ───────────────────────────────────── */
+@media (max-width: 640px) {
+  .floating-heart:nth-child(n + 10) {
+    display: none;
+  }
+  .star-twinkle:nth-child(n + 40) {
+    display: none;
+  }
+  .confetti-piece:nth-child(n + 60) {
+    display: none;
+  }
+  .cursor-trail-heart {
+    display: none;
+  }
+}
+
+/* ─── reduced motion ────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ─── global prose spacing ──────────────────────────── */
+@layer base {
+  p + p {
+    margin-top: 1em;
+  }
+}
