@@ -1,12 +1,14 @@
 import ScrollReveal from "./ScrollReveal";
 
+import { asset } from "../utils/asset";
+
 const photos = [
-  { src: "/images/us.jpg", caption: "The moment I knew", rotate: -2 },
-  { src: "/images/memory1.jpg", caption: "Our quiet walks", rotate: 1 },
-  { src: "/images/memory2.jpg", caption: "Your favorite laugh", rotate: -1 },
-  { src: "/images/memory3.jpg", caption: "Under the same stars", rotate: 2 },
-  { src: "/images/couple2.jpg", caption: "Chasing sunsets", rotate: -1.5 },
-  { src: "/images/couple-silhouette.jpg", caption: "Just us, always", rotate: 1.5 },
+  { src: asset("/images/us.jpg"), caption: "The moment I knew", rotate: -2 },
+  { src: asset("/images/memory1.jpg"), caption: "Our quiet walks", rotate: 1 },
+  { src: asset("/images/memory2.jpg"), caption: "Your favorite laugh", rotate: -1 },
+  { src: asset("/images/memory3.jpg"), caption: "Under the same stars", rotate: 2 },
+  { src: asset("/images/couple2.jpg"), caption: "Chasing sunsets", rotate: -1.5 },
+  { src: asset("/images/couple-silhouette.jpg"), caption: "Just us, always", rotate: 1.5 },
 ];
 
 export default function PhotoGallery() {
