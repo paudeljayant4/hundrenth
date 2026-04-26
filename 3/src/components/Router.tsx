@@ -18,7 +18,7 @@ export function useHashRoute() {
 
 export function HashRouter({ routes }: { routes: Record<string, ReactNode> }) {
   const hash = useHashRoute();
-  const path = hash.replace(/^#/, "").replace(/\/+$/, "") || "/";
+  const path = "/" + hash.replace(/^#\/?/, "").replace(/\/+$/, "");
   const route = routes[path] ?? routes["/"];
   return <>{route}</>;
 }
