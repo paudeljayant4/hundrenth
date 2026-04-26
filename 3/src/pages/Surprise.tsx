@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback, useRef, useMemo } from "react";
 import StarField from "../components/StarField";
 import FloatingHearts from "../components/FloatingHearts";
 import ConfettiBurst from "../components/ConfettiBurst";
@@ -8,6 +8,7 @@ import Sparkles from "../components/Sparkles";
 import ScrollProgress from "../components/ScrollProgress";
 import CursorTrail from "../components/CursorTrail";
 import BucketList from "../components/BucketList";
+import { asset } from "../utils/asset";
 
 /* ─── data ─────────────────────────────────────────────── */
 const timeline = [
@@ -51,6 +52,12 @@ export default function Surprise() {
   const [likedReasons, setLikedReasons] = useState<Set<number>>(new Set());
   const [letterRevealed, setLetterRevealed] = useState(false);
   const scrollYRef = useRef(0);
+  const relationshipStart = useMemo(() => {
+    const start = new Date();
+    start.setDate(start.getDate() - 100);
+    start.setHours(0, 0, 0, 0);
+    return start;
+  }, []);
 
   const handleStart = useCallback(() => {
     setStarted(true);
@@ -83,17 +90,17 @@ export default function Surprise() {
     });
   }, []);
 
-  const [elapsed, setElapsed] = useState(() => getElapsed());
+  const [elapsed, setElapsed] = useState(() => getElapsed(relationshipStart));
   useEffect(() => {
-    const id = setInterval(() => setElapsed(getElapsed()), 1000);
+    const id = setInterval(() => setElapsed(getElapsed(relationshipStart)), 1000);
     return () => clearInterval(id);
-  }, []);
+  }, [relationshipStart]);
 
-  const [toNext, setToNext] = useState(() => getCountdown(200));
+  const [toNext, setToNext] = useState(() => getCountdown(relationshipStart, 200));
   useEffect(() => {
-    const id = setInterval(() => setToNext(getCountdown(200)), 1000);
+    const id = setInterval(() => setToNext(getCountdown(relationshipStart, 200)), 1000);
     return () => clearInterval(id);
-  }, []);
+  }, [relationshipStart]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -150,7 +157,7 @@ export default function Surprise() {
           <FloatingHearts />
           <ScrollReveal>
             <div className="relative mb-8 h-44 w-44 overflow-hidden rounded-full border border-rose-300/15 shadow-[0_0_80px_rgba(255,95,143,0.2),0_0_160px_rgba(255,95,143,0.08)] sm:mb-12 sm:h-60 sm:w-60 lg:h-72 lg:w-72">
-              <img src="/images/us.jpg" alt="Us together" className="h-full w-full object-cover" loading="eager" draggable={false} />
+              <img src={asset("/images/us.jpg")} alt="Us together" className="h-full w-full object-cover" loading="eager" draggable={false} />
               <div className="absolute inset-0 rounded-full bg-gradient-to-t from-[#0a0010]/60 via-transparent to-[#0a0010]/20" />
             </div>
           </ScrollReveal>
@@ -371,7 +378,7 @@ export default function Surprise() {
           <div className="mx-auto max-w-2xl text-center">
             <ScrollReveal>
               <button type="button" className="gentle-float group relative mx-auto mb-8 block h-40 w-56 cursor-pointer overflow-hidden rounded-2xl border-0 p-0 sm:mb-12 sm:h-52 sm:w-72" onClick={openLetter} aria-label="Open your love letter">
-                <img src="/images/envelope.jpg" alt="A sealed love letter" className="h-full w-full object-cover shadow-[0_20px_80px_rgba(0,0,0,0.5)] transition-transform duration-500 group-hover:scale-105" loading="lazy" draggable={false} />
+                <img src={asset("/images/envelope.jpg")} alt="A sealed love letter" className="h-full w-full object-cover shadow-[0_20px_80px_rgba(0,0,0,0.5)] transition-transform duration-500 group-hover:scale-105" loading="lazy" draggable={false} />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a0010]/80 via-[#0a0010]/20 to-transparent" />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <span className="rounded-full bg-white/12 px-5 py-2 text-[10px] font-semibold uppercase tracking-[0.25em] text-white/90 backdrop-blur-sm transition-all group-hover:bg-white/22 sm:px-6 sm:py-3 sm:text-xs">Tap to open</span>
@@ -522,21 +529,15 @@ function LoveMeter() {
 }
 
 /* ─── utils ────────────────────────────────────────────── */
-function getElapsed() {
+function getElapsed(start: Date) {
   const now = new Date();
-  const start = new Date(now);
-  start.setDate(start.getDate() - 100);
-  start.setHours(0, 0, 0, 0);
   const diff = now.getTime() - start.getTime();
   const total = Math.floor(diff / 1000);
   return { days: Math.floor(total / 86400), hours: Math.floor((total % 86400) / 3600), minutes: Math.floor((total % 3600) / 60), seconds: total % 60 };
 }
 
-function getCountdown(targetDays: number) {
+function getCountdown(start: Date, targetDays: number) {
   const now = new Date();
-  const start = new Date(now);
-  start.setDate(start.getDate() - 100);
-  start.setHours(0, 0, 0, 0);
   const target = new Date(start);
   target.setDate(target.getDate() + targetDays);
   const diff = Math.max(target.getTime() - now.getTime(), 0);
