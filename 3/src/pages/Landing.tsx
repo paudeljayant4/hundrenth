@@ -30,19 +30,26 @@ export default function Landing() {
     setFade(true);
 
     let charIndex = 0;
+    let fadeTimeout: ReturnType<typeof setTimeout> | undefined;
+    let phaseTimeout: ReturnType<typeof setTimeout> | undefined;
+
     const typeInterval = setInterval(() => {
       charIndex++;
       setTyped(current.slice(0, charIndex));
       if (charIndex >= current.length) {
         clearInterval(typeInterval);
-        setTimeout(() => {
+        fadeTimeout = setTimeout(() => {
           setFade(false);
-          setTimeout(() => setPhase((p) => p + 1), 600);
+          phaseTimeout = setTimeout(() => setPhase((p) => p + 1), 600);
         }, 1800);
       }
     }, 45);
 
-    return () => clearInterval(typeInterval);
+    return () => {
+      clearInterval(typeInterval);
+      if (fadeTimeout) clearTimeout(fadeTimeout);
+      if (phaseTimeout) clearTimeout(phaseTimeout);
+    };
   }, [phase]);
 
   return (
